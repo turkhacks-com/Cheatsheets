@@ -7,7 +7,7 @@ Nuclei, web uygulamaları, ağ servisleri ve altyapılar üzerinde otomatik zafi
 
 ---
 
-## NUCLEI CHEAT SHEET (Güncel ve Pratik)
+## NUCLEI CHEATSHEET (Güncel ve Pratik)
 
 ---
 
