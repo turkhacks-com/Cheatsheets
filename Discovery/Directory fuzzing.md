@@ -44,7 +44,7 @@ feroxbuster -u https://target.com -w wordlist.txt --proxy http://127.0.0.1:8080
 
 ---
 
-## ## WF UZZ
+## ## WFUZZ
 
 #### Temel fuzz
 ```bash
