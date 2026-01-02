@@ -47,7 +47,7 @@ subfinder -d target1.com -d target2.com -o subdomains.txt
 
 ---
 
-## ## AKTİF / PASİF ZİNCİR
+## ## AKTİF / PASİF KEŞİF
 
 #### Aktif domain listesinden pasif keşif
 ```bash
