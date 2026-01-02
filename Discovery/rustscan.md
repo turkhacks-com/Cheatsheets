@@ -1,147 +1,192 @@
-#         RUSTSCAN CHEATSHEET
-### Turkhacks.com | Offensive Security Research
-#### https://github.com/RustScan/RustScan
+#     RUSTSCAN CHEATSHEET
+### Turkhacks.com | Bug Researchers Team
+#### GitHub: https://github.com/turkhacks-com
+#### RustScan GitHub: https://github.com/RustScan/RustScan
 
 ---
 
 ## Nedir:
-RustScan, klasik Nmap taramalarından önce çalışan, **çok hızlı port keşfi** yapan ve bulunan açık portları otomatik olarak Nmap’e devreden bir port keşif motorudur. Modern pentest zincirlerinin ilk adımıdır.
+RustScan, klasik Nmap taramalarını **çok yüksek hızda ön port keşfi** ile besleyen, Rust ile yazılmış ultra hızlı bir port tarayıcıdır. Açık portları milisaniyeler içinde keşfeder ve Nmap’e aktararak tam servis fingerprinting yapılmasını sağlar.
 
 ---
 
-# 1. TEMEL TARAMA
+## ## TEMEL TARAMA
 
-### Varsayılan tam tarama (port keşfi + nmap)
+#### Tüm portları tara ve Nmap varsayılan scriptleriyle analiz et
 ```bash
 rustscan -a 10.10.10.5
 ```
 
-### Root yetkisi ile ham soket hızlı tarama
+#### Ham soket ile ultra hızlı tarama
 ```bash
 sudo rustscan -a 10.10.10.5
 ```
 
-### Sadece açık port keşfi (Nmap yok)
+#### Sadece açık portları keşfet (Nmap çalıştırmaz)
 ```bash
 rustscan -a 10.10.10.5 --no-nmap
 ```
 
-### Sessiz mod (sadece sonuç)
+#### Sessiz mod
 ```bash
 rustscan -a 10.10.10.5 -q
 ```
 
 ---
 
-# 2. HEDEF YÖNETİMİ
+## ## HEDEF BELİRTME
 
-### Çoklu hedef
+#### Çoklu hedef tarama
 ```bash
 rustscan -a 10.10.10.5 api.example.com test.site
 ```
 
-### CIDR subnet tarama
+#### CIDR ile alt ağ taraması
 ```bash
 rustscan -a 10.10.10.0/24
 ```
 
-### Dosyadan hedef
+#### Dosyadan hedef oku
 ```bash
 rustscan -a targets.txt
 ```
 
-### Hariç tutma
+#### Hedef hariç tut
 ```bash
 rustscan -a 10.10.10.0/24 --exclude 10.10.10.254
 ```
 
 ---
 
-# 3. PORT YÖNETİMİ
+## ## PORT SEÇİMİ
 
-### Belirli portlar
+#### Belirli portlar
 ```bash
 rustscan -a 10.10.10.5 --ports 21,22,80,443,3306,8080
 ```
 
-### Port aralığı
+#### Port aralığı
 ```bash
 rustscan -a 10.10.10.5 --ports 1-1024
 ```
 
-### En popüler 1000 port
+#### En popüler portlar
 ```bash
 rustscan -a 10.10.10.5 --top
 ```
 
+#### Karma port listesi
+```bash
+rustscan -a 10.10.10.5 --ports 80,443,8000-8100
+```
+
 ---
 
-# 4. NMAP ENTEGRASYONU
+## ## NMAP ENTEGRASYONU
 
-### Agresif detaylı tarama
+#### Agresif tarama
 ```bash
 rustscan -a 10.10.10.5 -- -A -T4
 ```
 
-### ICMP kapalı hedefler
+#### Ping bypass
 ```bash
 rustscan -a 10.10.10.5 -- -Pn -A
 ```
 
-### UDP tarama
+#### UDP port taraması
 ```bash
 rustscan -a 10.10.10.5 -- -sU --top-ports 20
 ```
 
-### Script kullanımı
+#### HTTP scriptleri
 ```bash
 rustscan -a 10.10.10.5 -- -sV --script="http-title,http-headers"
 ```
 
-### Full port deep scan
+#### Full detay Nmap
 ```bash
 rustscan -a 10.10.10.5 -- -p- -A -v
 ```
 
 ---
 
-# 5. PERFORMANS
+## ## PERFORMANS
 
-### Batch size
+#### Batch size artır
 ```bash
 rustscan -a 10.10.10.5 -b 6500
 ```
 
-### Timeout
+#### Timeout artır
 ```bash
 rustscan -a 10.10.10.5 -t 2000
 ```
 
-### Ulimit
+#### Ulimit ayarla
 ```bash
 rustscan -a 10.10.10.5 -u 5000
 ```
 
+#### Tarama sırası
+```bash
+rustscan -a 10.10.10.5 --scan-order Serial
+```
+
 ---
 
-# 6. OUTPUT
+## ## OUTPUT
 
-### Greppable
+#### Greppable çıktı
 ```bash
 rustscan -a 10.10.10.5 -g
 ```
 
-### Nmap çıktı
+#### Nmap .txt
 ```bash
-rustscan -a 10.10.10.5 -- -oA nmap_sonuclari
+rustscan -a 10.10.10.5 -- -oN scan.txt
+```
+
+#### Nmap XML
+```bash
+rustscan -a 10.10.10.5 -- -oX scan.xml
+```
+
+#### Tüm formatlar
+```bash
+rustscan -a 10.10.10.5 -- -oA scan_all
 ```
 
 ---
 
-# 7. OPSEC / İPUÇLARI
+## ## DİĞER
 
-- RustScan → httpx → nuclei → ffuf zinciri modern pentest standardıdır  
-- RustScan her zaman **ilk adım** olmalıdır  
-- `--no-nmap` modunda çıkan portları manuel hedef listesi olarak kullanın  
+#### Network interface seç
+```bash
+rustscan -a 10.10.10.5 -i eth1
+```
+
+#### DNS kapat
+```bash
+rustscan -a example.com --no-dns
+```
+
+#### Retry sayısı
+```bash
+rustscan -a 10.10.10.5 --tries 3
+```
+
+#### Versiyon
+```bash
+rustscan --version
+```
+
+---
+
+## İpuçları
+
+- RustScan her zaman **ön tarama**, Nmap her zaman **derin analiz** içindir  
+- `--no-nmap` + `httpx` = ultra hızlı yüzey keşfi  
+- RustScan çıktısı direkt nuclei / ffuf zincirine girer  
 
 ---
