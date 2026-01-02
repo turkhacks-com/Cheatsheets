@@ -1,239 +1,250 @@
-# TEMEL NMAP KULLANIMI
+### Turkhacks.com | Bug researchers team
+#### GitHub: https://github.com/turkhacks-com
+#### Nmap GitHub: https://github.com/nmap/nmap
 
-# Basit port taraması (ilk 1000 port)
-nmap target.com
+#### Nedir:
+Nmap, ağ üzerindeki cihazları, açık portları, çalışan servisleri, versiyon bilgilerini ve olası güvenlik zafiyetlerini tespit etmek için kullanılan güçlü bir ağ keşif ve güvenlik tarama aracıdır.
 
-# Daha fazla port tarama (ilk 5000 port)
-nmap -p-5000 target.com
+---
 
-# Tüm portları tarama (0-65535)
-nmap -p- target.com
+## TEMEL NMAP KULLANIMI
 
-# Hedefin canlı olup olmadığını kontrol etme (ping scan)
-nmap -sn target.com
+#### Basit port taraması (ilk 1000 port)
+`nmap target.com`
 
-# Tek bir portu tarama
-nmap -p 443 target.com
+#### Daha fazla port tarama (ilk 5000 port)
+`nmap -p-5000 target.com`
 
-# Belirli bir port aralığını tarama
-nmap -p 20-100 target.com
+#### Tüm portları tarama (0-65535)
+`nmap -p- target.com`
 
-# Birden fazla portu tarama
-nmap -p 22,80,443 target.com
+#### Hedefin canlı olup olmadığını kontrol etme (ping scan)
+`nmap -sn target.com`
 
-# Belirli bir IP aralığını tarama
-nmap 192.168.1.0/24
+#### Tek bir portu tarama
+`nmap -p 443 target.com`
 
-# Tüm yerel ağı tarama
-nmap -sn 192.168.1.0/24
+#### Belirli bir port aralığını tarama
+`nmap -p 20-100 target.com`
 
-# SERVİS VE VERSİYON TESPİTİ
+#### Birden fazla portu tarama
+`nmap -p 22,80,443 target.com`
 
-# Servis ve versiyon bilgisi toplama
-nmap -sV target.com
+#### Belirli bir IP aralığını tarama
+`nmap 192.168.1.0/24`
 
-# Derin servis taraması
-nmap -sV --version-intensity 9 target.com
+#### Tüm yerel ağı tarama
+`nmap -sn 192.168.1.0/24`
 
-# İşletim sistemi tespiti (OS Detection)
-nmap -O target.com
+---
 
-# Firewall arkasındaki işletim sistemini belirleme
-nmap -O --fuzzy target.com
+## SERVİS VE VERSİYON TESPİTİ
 
-# SERVİS & OS TESPİTİNİ BİRLİKTE KULLANMA
-nmap -A target.com
+#### Servis ve versiyon bilgisi toplama
+`nmap -sV target.com`
 
-# GİZLİ TARAMALAR (STEALTH SCAN)
+#### Derin servis taraması
+`nmap -sV --version-intensity 9 target.com`
 
-# TCP SYN taraması (stealth mode)
-nmap -sS target.com
+#### İşletim sistemi tespiti (OS Detection)
+`nmap -O target.com`
 
-# TCP Connect taraması
-nmap -sT target.com
+#### Firewall arkasındaki işletim sistemini belirleme
+`nmap -O --fuzzy target.com`
 
-# UDP taraması
-nmap -sU target.com
+#### Servis & OS tespitini birlikte kullanma
+`nmap -A target.com`
 
-# NULL taraması (firewall atlatma)
-nmap -sN target.com
+---
 
-# FIN taraması (firewall atlatma)
-nmap -sF target.com
+## GİZLİ TARAMALAR (STEALTH SCAN)
 
-# Xmas taraması (firewall atlatma)
-nmap -sX target.com
+#### TCP SYN taraması
+`nmap -sS target.com`
 
-####  PING TARAMALARI
-# Ping taraması (hangi cihazlar aktif)
-nmap -sn 192.168.1.0/24
+#### TCP Connect taraması
+`nmap -sT target.com`
 
-# Ping bypass (Eğer ICMP kapalıysa)
-nmap -Pn target.com
+#### UDP taraması
+`nmap -sU target.com`
 
-# Firewall bypass için düşük hızda tarama
-nmap --max-rate 10 target.com
+#### NULL taraması
+`nmap -sN target.com`
 
-#### FARKLI AĞ PROTOKOLLERİYLE TARAMA
-# TCP taraması
-nmap -sT target.com
+#### FIN taraması
+`nmap -sF target.com`
 
-# UDP taraması
-nmap -sU target.com
+#### Xmas taraması
+`nmap -sX target.com`
 
-# IP protokol taraması
-nmap -sO target.com
+---
 
-# IPv6 taraması
-nmap -6 target.com
+## PING TARAMALARI
 
-# PORT TARAMA TEKNİKLERİ
+#### Aktif cihazları bulma
+`nmap -sn 192.168.1.0/24`
 
-# SYN scan (stealth mode, hızlı)
-nmap -sS target.com
+#### Ping bypass
+`nmap -Pn target.com`
 
-# Tam TCP bağlanma taraması
-nmap -sT target.com
+#### Düşük hızda tarama
+`nmap --max-rate 10 target.com`
 
-# UDP taraması (yavaş olabilir)
-nmap -sU target.com
+---
 
-# Açık portları listeleme
-nmap --open target.com
+## FARKLI AĞ PROTOKOLLERİYLE TARAMA
 
-# Güvenlik duvarı tespit etme
-nmap -sA target.com
+#### TCP taraması
+`nmap -sT target.com`
 
-####  PORT TARAMASI İLE DETAYLI BİLGİLER TOPLAMA
-# Hangi servislerin çalıştığını gösterir
-nmap -sV -p 80,443,22 target.com
+#### UDP taraması
+`nmap -sU target.com`
 
-# İşletim sistemini belirleme
-nmap -O target.com
+#### IP protokol taraması
+`nmap -sO target.com`
 
-# Tüm portlar ve detaylı bilgi
-nmap -sV -O -p- target.com
+#### IPv6 taraması
+`nmap -6 target.com`
 
-# Firewall olup olmadığını belirleme
-nmap -sA target.com
+---
 
-# FARKLI TARAYICI İZLERİ KULLANMA (EVASION TECHNIQUES)
+## PORT TARAMA TEKNİKLERİ
 
-# Taramayı yavaşlatarak güvenlik sistemlerinden kaçınma
-nmap -T2 target.com
+#### Açık portları listeleme
+`nmap --open target.com`
 
-# Farklı bir user-agent ile tarama yapma
-nmap --script=http-useragent target.com
+#### Güvenlik duvarı tespiti
+`nmap -sA target.com`
 
-# Ağ trafiğini şifreleyerek tarama yapma
-nmap --script=ssl-enum-ciphers target.com
+---
 
-# GÜVENLİK AÇIKLARINI TESPİT ETME
+## DETAYLI BİLGİ TOPLAMA
 
-# Zafiyet taraması (script tarama)
-nmap --script=vuln target.com
+#### Servisleri göster
+`nmap -sV -p 80,443,22 target.com`
 
-# Exploit edilebilir servisleri tarama
-nmap --script=exploit target.com
+#### Tüm portlar + OS + servis
+`nmap -sV -O -p- target.com`
 
-# Hedef sistemin hangi saldırılara açık olduğunu belirleme
-nmap --script=auth target.com
+---
 
-# SSL protokolünün güvenliğini test etme
-nmap --script=ssl-cert target.com
+## EVASION / KAÇINMA TEKNİKLERİ
 
-# Belirli bir güvenlik açığını test etme
-nmap --script=http-vuln-cve2017-5638 target.com
+#### Yavaş tarama
+`nmap -T2 target.com`
 
-#### BRUTE FORCE TARAMALARI
-# SSH brute-force
-nmap --script=ssh-brute target.com
+#### User-agent değiştirme
+`nmap --script=http-useragent target.com`
 
-# FTP brute-force
-nmap --script=ftp-brute target.com
+#### SSL analizleri
+`nmap --script=ssl-enum-ciphers target.com`
 
-# MySQL brute-force
-nmap --script=mysql-brute target.com
+---
 
-# SNMP brute-force
-nmap --script=snmp-brute target.com
+## ZAFİYET TARAMALARI
 
-# RDP brute-force
-nmap --script=rdp-brute target.com
+#### Genel zafiyet taraması
+`nmap --script=vuln target.com`
 
-#### WEB SERVİS TARAMALARI
-# HTTP başlıklarını ve bilgiler toplama
-nmap --script=http-headers target.com
+#### Exploit edilebilir servisler
+`nmap --script=exploit target.com`
 
-# HTTP servis versiyonu öğrenme
-nmap --script=http-server-header target.com
+#### Yetkilendirme zafiyetleri
+`nmap --script=auth target.com`
 
-# Web sitesindeki dizinleri keşfetme
-nmap --script=http-enum target.com
+---
 
-# Web uygulamalarındaki potansiyel güvenlik açıklarını belirleme
-nmap --script=http-vuln* target.com
+## BRUTE FORCE TARAMALARI
 
-# SSL/TLS güvenlik analizleri yapma
-nmap --script=ssl-enum-ciphers target.com
+#### SSH
+`nmap --script=ssh-brute target.com`
 
-#### BANNER GRABBING (Servislerin Banner Bilgilerini Alma)
-# FTP banner grabbing
-nmap --script=ftp-banner target.com
+#### FTP
+`nmap --script=ftp-brute target.com`
 
-# SMTP banner grabbing
-nmap --script=smtp-banner target.com
+#### MySQL
+`nmap --script=mysql-brute target.com`
 
-# HTTP server bilgisi alma
-nmap --script=http-title target.com
+#### SNMP
+`nmap --script=snmp-brute target.com`
 
-# SNMP bilgilerini toplama
-nmap --script=snmp-info target.com
+#### RDP
+`nmap --script=rdp-brute target.com`
 
-# DOSYA ÇIKTISI VE LOG KAYDI
+---
 
-# Taramayı kaydetme (XML, normal, grepable format)
-nmap -oA scan_output target.com
+## WEB SERVİS TARAMALARI
 
-# Taramayı sadece XML formatında kaydetme
-nmap -oX scan.xml target.com
+#### HTTP başlıkları
+`nmap --script=http-headers target.com`
 
-# Taramayı sadece düz metin formatında kaydetme
-nmap -oN scan.txt target.com
+#### HTTP versiyon bilgisi
+`nmap --script=http-server-header target.com`
 
-# Taramayı grepable formatta kaydetme
-nmap -oG scan.gnmap target.com
+#### Dizin keşfi
+`nmap --script=http-enum target.com`
 
-#### ZAMANLAYICI SEÇENEKLERİ (PERFORMANCE OPTIONS)
-# En hızlı tarama modu (dikkatli kullanılmalı)
-nmap -T5 target.com
+---
 
-# Daha yavaş ancak güvenlik duvarlarını atlamak için kullanılabilir
-nmap -T1 target.com
+## BANNER GRABBING
 
-# Orta seviye hız
-nmap -T3 target.com
+#### FTP banner
+`nmap --script=ftp-banner target.com`
 
-# Firewall atlatmak için düşük hız
-nmap --max-rate 10 target.com
+#### SMTP banner
+`nmap --script=smtp-banner target.com`
 
-#### ÖZEL PAKET VE FARKLI PORTLAR İLE ANALİZ
-# Belirli bir kaynak port ile tarama
-nmap --source-port 53 target.com
+---
 
-# Tüm TCP bayraklarını belirleme
-nmap --scanflags SYNFINACK target.com
+## DOSYA ÇIKTISI VE LOG
 
-# NMAP SCRIPT ENGINE (NSE) KULLANIMI
+#### Tüm formatlarda kayıt
+`nmap -oA scan_output target.com`
 
-# Tüm scriptleri listeleme
-nmap --script-help=*
+#### XML kayıt
+`nmap -oX scan.xml target.com`
 
-# Hedefteki SQL injection açıklarını tarama
-nmap --script=http-sql-injection target.com
+#### TXT kayıt
+`nmap -oN scan.txt target.com`
 
-# Açık veritabanlarını bulma
-nmap --script=mysql-empty-password target.com
+#### Grepable kayıt
+`nmap -oG scan.gnmap target.com`
 
-# FTP anonim erişimini test etme
-nmap --script=ftp-anon target.com
+---
+
+## ZAMANLAYICI AYARLARI
+
+#### En hızlı
+`nmap -T5 target.com`
+
+#### En yavaş
+`nmap -T1 target.com`
+
+#### Orta seviye
+`nmap -T3 target.com`
+
+---
+
+## ÖZEL PAKET / PORT ANALİZİ
+
+#### Kaynak port belirleme
+`nmap --source-port 53 target.com`
+
+#### TCP bayrakları
+`nmap --scanflags SYNFINACK target.com`
+
+---
+
+## NMAP SCRIPT ENGINE (NSE)
+
+#### Scriptleri listeleme
+`nmap --script-help=*`
+
+#### SQLi taraması
+`nmap --script=http-sql-injection target.com`
+
+#### Boş MySQL şifreleri
+`nmap --script=mysql-empty-password target.com`
+
+#### FTP anonim erişim
+`nmap --script=ftp-anon target.com`
