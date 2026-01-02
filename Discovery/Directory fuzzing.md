@@ -1,9 +1,5 @@
-#############################
-#                           #
-#  DIRECTORY FUZZING CHEATSHEET
-#                           #
-#############################
 
+#  DIRECTORY FUZZING CHEATSHEET
 ### Turkhacks.com | Bug Researchers Team
 #### GitHub: https://github.com/turkhacks-com
 
