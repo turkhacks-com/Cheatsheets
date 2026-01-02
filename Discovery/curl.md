@@ -1,51 +1,129 @@
-# Basit bir HTTP isteği yap
+#     CURL CHEATSHEET
+### Turkhacks.com | Bug Researchers Team
+#### GitHub: https://github.com/turkhacks-com
+#### cURL GitHub: https://github.com/curl/curl
+
+---
+
+## Nedir:
+cURL, HTTP/HTTPS/FTP/SFTP/SMTP gibi birçok protokol üzerinden **istemci–sunucu iletişimini test etmek**, API çağrıları yapmak, dosya transferi gerçekleştirmek ve güvenlik testlerinde manuel istek simülasyonu yapmak için kullanılan çok yönlü bir CLI aracıdır.
+
+---
+
+## ## TEMEL HTTP KULLANIMI
+
+#### Basit HTTP isteği
+```bash
 curl http://example.com
+```
 
-# HTTPS ile bir siteye istek yap
+#### HTTPS isteği
+```bash
 curl https://example.com
+```
 
-# Bir dosyayı indir
-curl -O https://example.com/file.zip
-
-# Dosyayı belirli bir adla kaydet
-curl -o myfile.zip https://example.com/file.zip
-
-# HTTP başlıklarını göster
+#### Sadece HTTP başlıklarını göster
+```bash
 curl -I https://example.com
+```
 
-# POST isteği gönder
-curl -X POST -d "username=user&password=pass" https://example.com/login
+---
 
-# JSON veri ile POST isteği gönder
-curl -X POST -H "Content-Type: application/json" -d '{"username":"user","password":"pass"}' https://example.com/api/login
+## ## DOSYA İNDİRME / KAYDETME
 
-# Bir API'ye kimlik doğrulama ile istek gönder
-curl -u "kullanici:parola" https://example.com/api
+#### Dosyayı indir (orijinal adıyla)
+```bash
+curl -O https://example.com/file.zip
+```
 
-# Cookie kullanarak istek yap
-curl -b "sessionid=abcd1234" https://example.com/dashboard
+#### Dosyayı özel adla kaydet
+```bash
+curl -o myfile.zip https://example.com/file.zip
+```
 
-# User-Agent değiştirerek istek yap
-curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" https://example.com
-
-# Proxy üzerinden istek yap
-curl -x http://proxyserver:port https://example.com
-
-# Timeout belirleyerek istek yap
-curl --max-time 10 https://example.com
-
-# Yanıtı belirli bir dosyaya kaydet
-curl -o response.html https://example.com
-
-# Birden fazla URL'ye istek gönder
+#### Birden fazla dosya indir
+```bash
 curl -O https://example.com/file1.zip -O https://example.com/file2.zip
+```
 
-# HTTP yanıt kodunu göster
-curl -s -o /dev/null -w "%{http_code}" https://example.com
+#### Yanıtı HTML olarak kaydet
+```bash
+curl -o response.html https://example.com
+```
 
-# Başlık (Header) ekleyerek istek yap
+---
+
+## ## POST / API KULLANIMI
+
+#### Form POST isteği
+```bash
+curl -X POST -d "username=user&password=pass" https://example.com/login
+```
+
+#### JSON ile POST
+```bash
+curl -X POST -H "Content-Type: application/json" \
+-d '{"username":"user","password":"pass"}' https://example.com/api/login
+```
+
+#### Authorization header ile istek
+```bash
 curl -H "Authorization: Bearer TOKEN" https://example.com/api
+```
 
-# FTP sunucusundan dosya indirme
+---
+
+## ## AUTH / COOKIE / HEADER
+
+#### Basic Auth
+```bash
+curl -u "kullanici:parola" https://example.com/api
+```
+
+#### Cookie ile istek
+```bash
+curl -b "sessionid=abcd1234" https://example.com/dashboard
+```
+
+#### User‑Agent değiştir
+```bash
+curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" https://example.com
+```
+
+---
+
+## ## PROXY / TIMEOUT / KONTROL
+
+#### Proxy üzerinden istek
+```bash
+curl -x http://proxyserver:port https://example.com
+```
+
+#### Timeout belirleme
+```bash
+curl --max-time 10 https://example.com
+```
+
+#### HTTP durum kodunu göster
+```bash
+curl -s -o /dev/null -w "%{http_code}" https://example.com
+```
+
+---
+
+## ## FTP / DOSYA TRANSFER
+
+#### FTP sunucusundan dosya indir
+```bash
 curl -u "kullanici:parola" ftp://ftp.example.com/file.txt -o localfile.txt
+```
 
+---
+
+## ## İPUÇLARI
+
+- `-v` parametresi detaylı debug çıktısı verir  
+- API testlerinde `-H "Content-Type: application/json"` her zaman kullanılmalı  
+- Büyük dosya transferlerinde `--limit-rate` bant genişliği kontrolü sağlar  
+
+---
