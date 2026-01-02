@@ -1,5 +1,0 @@
-# Directory fuzzing
-
-feroxbuster -u https://target.com -w /usr/share/wordlists/dirb/common.txt -t 50
-wfuzz -c -z file,/usr/share/wordlists/dirb/common.txt --hc 404 http://target.com/FUZZ
-ffuf -u https://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt

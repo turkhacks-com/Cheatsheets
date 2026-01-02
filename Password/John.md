@@ -1,122 +1,143 @@
-# Temel Kullanım - Bir Parolayı Çözme
+#     JOHN THE RIPPER CHEATSHEET
+### Turkhacks.com | Bug Researchers Team
+#### GitHub: https://github.com/turkhacks-com
+#### John GitHub: https://github.com/openwall/john
+
+---
+
+## Nedir:
+John the Ripper (JtR), hash’lenmiş parolaların **wordlist, rule, mask ve brute‑force** yöntemleriyle çözülmesini sağlayan endüstri standardı bir parola denetim (password auditing) motorudur. CTF, red‑team ve gerçek dünya parola güvenliği testlerinde temel araçtır.
+
+---
+
+## ## TEMEL KULLANIM
+
+#### Basit parola çözme
+```bash
 john --wordlist=/path/to/wordlist.txt --format=raw-md5 hashfile.txt
+```
 
-# Hedef Hash Formatı Belirleme - MD5
-john --format=raw-md5 --wordlist=/path/to/wordlist.txt hashfile.txt
-
-# Hedef Hash Formatı Belirleme - SHA256
-john --format=raw-sha256 --wordlist=/path/to/wordlist.txt hashfile.txt
-
-# Hedef Hash Formatı Belirleme - NTLM
-john --format=ntlm --wordlist=/path/to/wordlist.txt hashfile.txt
-
-# Hedef Hash Formatı Belirleme - DES (Unix Shadow)
-john --format=descrypt --wordlist=/path/to/wordlist.txt hashfile.txt
-
-# Kullanıcıya Ait Hashleri Çözme (Unix Shadow)
-john --format=shadow --wordlist=/path/to/wordlist.txt /etc/shadow
-
-# Salt ile Parolayı Çözme
-john --wordlist=/path/to/wordlist.txt --format=raw-md5 --salts hashfile.txt
-
-# Salt'lı MD5 Hash Çözme
-john --format=raw-md5 --wordlist=/path/to/wordlist.txt hashfile.txt --salts
-
-# Hashlerin Çözülmüş Hallerini Görüntüleme
-john --show hashfile.txt
-
-# Çözülmüş Hashleri Dosyaya Kaydetme
-john --show --format=raw-md5 hashfile.txt > cracked_passwords.txt
-
-# Paralel Çalışma - Çok Çekirdekli Sistem Kullanımı
-john --fork=4 --wordlist=/path/to/wordlist.txt hashfile.txt
-
-# Düzenli Olarak Çözme Durumunu Görüntüleme
-john --status
-
-# Parola Dosyasını Karıştırma
-john --wordlist=/path/to/wordlist.txt --rules --stdout
-
-# Mask Kullanarak Parola Kırma (Örnek: Şifre 8 Karakter, Büyük/Küçük Harf, Sayı)
-john --mask='?l?u?d?d?d?d?d?d' --min-length=8 --max-length=8 --wordlist=/path/to/wordlist.txt hashfile.txt
-
-# Parola Dosyası İçindeki Tüm Hashleri Çözme
-john --format=raw-md5 --wordlist=/path/to/wordlist.txt --test hashfile.txt
-
-# Veritabanından Parola Çözümü İçin 'john' Çalıştırma
-john --restore=session_name
-
-# Mask Yöntemi ile Hedef Parolayı Çözme
-john --mask='?l?l?l?l?d?d' --min-length=6 --max-length=6 --wordlist=/path/to/wordlist.txt hashfile.txt
-
-# Parola Dosyasındaki Diğer Hash Formatlarını Tanımlama
-john --list=formats
-
-# Wordlist ile Birden Fazla Hash Dosyasını Çözme
-john --wordlist=/path/to/wordlist.txt hashfile1.txt hashfile2.txt
-
-# Salt ve Hash Formatı Otomatik Tanımlama
+#### Otomatik hash formatı tanıma
+```bash
 john --wordlist=/path/to/wordlist.txt --format=auto hashfile.txt
+```
 
-# ZIP Dosyasındaki Parolayı Çözme
-john --format=zip --wordlist=/path/to/wordlist.txt zipfile.zip
-
-# RAR Dosyasındaki Parolayı Çözme
-john --format=rar --wordlist=/path/to/wordlist.txt rarfile.rar
-
-# John ile Wordlist ve Kural Kullanımı
-john --wordlist=/path/to/wordlist.txt --rules=Jumbo hashfile.txt
-
-# Birden Fazla Wordlist Kullanma
-john --wordlist=/path/to/wordlist1.txt --wordlist=/path/to/wordlist2.txt hashfile.txt
-
-# Brute-Force ile Parola Çözme
-john --incremental --format=raw-md5 hashfile.txt
-
-# Potansiyel Hash Formatlarını Göstermek
-john --list=formats | grep -i md5
-
-# Hash Dosyasındaki Parola Çözme İşlemine Devam Etme
-john --restore
-
-# 'John' Çalışırken Parola Çözme Durumunu Gösterme
-john --status
-
-# 'John' Çalışırken Gelişmiş Deneme Yöntemlerini Gösterme
-john --test=1 --wordlist=/path/to/wordlist.txt hashfile.txt
-
-# Çözülen Parolaları 'John' Çalıştırma
+#### Çözülmüş parolaları görüntüleme
+```bash
 john --show hashfile.txt
+```
 
-# Özel Kurallar Kullanarak Parola Kırma
-john --wordlist=/path/to/wordlist.txt --rules=best64 hashfile.txt
+---
 
-# CTF: .htpasswd dosyasındaki parolayı çözme
-john --format=crypt --wordlist=/path/to/wordlist.txt .htpasswd
+## ## HASH FORMATLARI
 
-# CTF: Web Application taraması sonucu ele geçirilen Base64 hash'in çözülmesi
-john --format=base64 --wordlist=/path/to/wordlist.txt hashfile.txt
+#### MD5
+```bash
+john --format=raw-md5 --wordlist=/path/to/wordlist.txt hashfile.txt
+```
 
-# CTF: SHA1 hashini çözme
-john --format=raw-sha1 --wordlist=/path/to/wordlist.txt hashfile.txt
+#### SHA1 / SHA256
+```bash
+john --format=raw-sha1   --wordlist=/path/to/wordlist.txt hashfile.txt
+john --format=raw-sha256 --wordlist=/path/to/wordlist.txt hashfile.txt
+```
 
-# Gerçek Dünya: SQL dump'dan alınan MD5 hashini çözme
-john --format=raw-md5 --wordlist=/path/to/wordlist.txt sql_dump.txt
+#### NTLM (Windows)
+```bash
+john --format=ntlm --wordlist=/path/to/wordlist.txt hashfile.txt
+```
 
-# Gerçek Dünya: Unix Shadow dosyasındaki şifreleri çözme
-john --format=shadow --wordlist=/path/to/wordlist.txt /etc/shadow
+#### Unix Shadow / DES
+```bash
+john --format=shadow    --wordlist=/path/to/wordlist.txt /etc/shadow
+john --format=descrypt --wordlist=/path/to/wordlist.txt hashfile.txt
+```
 
-# Gerçek Dünya: Şirket içi parola denemeleri için brute-force
-john --incremental --format=ntlm --wordlist=/path/to/wordlist.txt target_hashes.txt
+---
 
-# John the Ripper ile parolaların hashlerini, şifreleri hızlıca çözme
-john --wordlist=/path/to/wordlist.txt --rules --format=raw-md5 hashfile.txt
+## ## SALT / KURAL / MASKE
 
-# Hash dosyasını batch mode ile çözme
-john --batch --wordlist=/path/to/wordlist.txt hashfile.txt
-
-# Salt'lı hash çözme
+#### Salt’lı hash çözme
+```bash
 john --format=raw-md5 --wordlist=/path/to/wordlist.txt hashfile.txt --salts
+```
 
-# Çözülen hashleri belirli bir dosyaya kaydetme
+#### Rule kullanımı
+```bash
+john --wordlist=/path/to/wordlist.txt --rules=best64 hashfile.txt
+john --wordlist=/path/to/wordlist.txt --rules=Jumbo  hashfile.txt
+```
+
+#### Mask brute‑force
+```bash
+john --mask='?l?u?d?d?d?d?d?d' --min-length=8 --max-length=8 hashfile.txt
+john --mask='?l?l?l?l?d?d' --min-length=6 --max-length=6 hashfile.txt
+```
+
+---
+
+## ## PERFORMANS / OTURUM
+
+#### Çok çekirdekli çalışma
+```bash
+john --fork=4 --wordlist=/path/to/wordlist.txt hashfile.txt
+```
+
+#### Durum kontrolü
+```bash
+john --status
+```
+
+#### Kaldığı yerden devam
+```bash
+john --restore
+```
+
+---
+
+## ## DOSYA & ÇIKTI
+
+#### Çözülenleri dosyaya kaydet
+```bash
 john --show hashfile.txt > cracked_passwords.txt
+```
+
+#### Tüm desteklenen formatları listele
+```bash
+john --list=formats
+```
+
+---
+
+## ## ARŞİV / CTF / GERÇEK DÜNYA
+
+#### ZIP / RAR parola çözme
+```bash
+john --format=zip --wordlist=/path/to/wordlist.txt zipfile.zip
+john --format=rar --wordlist=/path/to/wordlist.txt rarfile.rar
+```
+
+#### .htpasswd
+```bash
+john --format=crypt --wordlist=/path/to/wordlist.txt .htpasswd
+```
+
+#### SQL dump MD5
+```bash
+john --format=raw-md5 --wordlist=/path/to/wordlist.txt sql_dump.txt
+```
+
+#### Windows NTLM brute‑force
+```bash
+john --incremental --format=ntlm target_hashes.txt
+```
+
+---
+
+## İpuçları
+
+- İlk deneme her zaman **wordlist + rules** ile yapılmalıdır  
+- Sonra **mask brute‑force**, en sonda **incremental** önerilir  
+- cracked çıktıları nuclei / hydra zincirine feed edilebilir  
+
+---

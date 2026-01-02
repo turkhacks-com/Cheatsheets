@@ -1,119 +1,192 @@
-# RustScan - Geniş ve Ayrıntılı Cheatsheet
+#     RUSTSCAN CHEATSHEET
+### Turkhacks.com | Bug Researchers Team
+#### GitHub: https://github.com/turkhacks-com
+#### RustScan GitHub: https://github.com/RustScan/RustScan
 
 ---
-## Bölüm 1: Temel Tarama Komutları
+
+## Nedir:
+RustScan, klasik Nmap taramalarını **çok yüksek hızda ön port keşfi** ile besleyen, Rust ile yazılmış ultra hızlı bir port tarayıcıdır. Açık portları milisaniyeler içinde keşfeder ve Nmap’e aktararak tam servis fingerprinting yapılmasını sağlar.
+
 ---
 
-# Bir hedefin tüm portlarını tarar ve açık portları Nmap'in varsayılan betikleriyle (-sC -sV) analiz eder
+## ## TEMEL TARAMA
+
+#### Tüm portları tara ve Nmap varsayılan scriptleriyle analiz et
+```bash
 rustscan -a 10.10.10.5
+```
 
-# Ham soket erişimiyle (daha hızlı) tarama yapmak için sudo ile çalıştırın
+#### Ham soket ile ultra hızlı tarama
+```bash
 sudo rustscan -a 10.10.10.5
+```
 
-# Sadece açık portları keşfeder, Nmap taraması yapmaz (hızlı kontrol için)
+#### Sadece açık portları keşfet (Nmap çalıştırmaz)
+```bash
 rustscan -a 10.10.10.5 --no-nmap
+```
 
-# RustScan'in kendi banner'larını ve ilerleme çubuğunu gizleyerek sadece sonucu gösterir
+#### Sessiz mod
+```bash
 rustscan -a 10.10.10.5 -q
+```
 
 ---
-## Bölüm 2: Hedef Belirtme
----
 
-# Birden fazla hedefi (IP veya alan adı) boşluk bırakarak tarama
+## ## HEDEF BELİRTME
+
+#### Çoklu hedef tarama
+```bash
 rustscan -a 10.10.10.5 api.example.com test.site
+```
 
-# CIDR notasyonunda bir alt ağı tarama
+#### CIDR ile alt ağ taraması
+```bash
 rustscan -a 10.10.10.0/24
+```
 
-# Hedef listesini bir dosyadan okuma (her satırda bir hedef)
-rustscan -a /path/to/targets.txt
+#### Dosyadan hedef oku
+```bash
+rustscan -a targets.txt
+```
 
-# Bir hedefi tarama dışı bırakma
+#### Hedef hariç tut
+```bash
 rustscan -a 10.10.10.0/24 --exclude 10.10.10.254
+```
 
 ---
-## Bölüm 3: Port Kontrolü ve Aralık Belirtme
----
 
-# Sadece belirli portları virgülle ayırarak tarama
+## ## PORT SEÇİMİ
+
+#### Belirli portlar
+```bash
 rustscan -a 10.10.10.5 --ports 21,22,80,443,3306,8080
+```
 
-# Belirli bir port aralığını tarama
+#### Port aralığı
+```bash
 rustscan -a 10.10.10.5 --ports 1-1024
+```
 
-# En popüler 1000 portu tarama
+#### En popüler portlar
+```bash
 rustscan -a 10.10.10.5 --top
+```
 
-# Belirli portları ve aralıkları bir arada kullanma
+#### Karma port listesi
+```bash
 rustscan -a 10.10.10.5 --ports 80,443,8000-8100
-
-# Taranacak portları bir string (dizi) olarak verme
-rustscan -a 10.10.10.5 --ports "80, 443, 1337"
+```
 
 ---
-## Bölüm 4: Gelişmiş Nmap Entegrasyonu
----
 
-# "--" sonrası tüm komutları Nmap'e aktarır. Bu örnek agresif (-A) ve hızlı (-T4) bir tarama yapar.
+## ## NMAP ENTEGRASYONU
+
+#### Agresif tarama
+```bash
 rustscan -a 10.10.10.5 -- -A -T4
+```
 
-# Hedefin ping (ICMP) isteklerine cevap vermediği durumlarda taramayı zorlamak için (-Pn)
+#### Ping bypass
+```bash
 rustscan -a 10.10.10.5 -- -Pn -A
+```
 
-# Nmap ile UDP port taraması yapma (-sU), bu işlem TCP'ye göre yavaştır
+#### UDP port taraması
+```bash
 rustscan -a 10.10.10.5 -- -sU --top-ports 20
+```
 
-# Belirli bir Nmap betiğini (script) çalıştırma
+#### HTTP scriptleri
+```bash
 rustscan -a 10.10.10.5 -- -sV --script="http-title,http-headers"
+```
 
-# Açık olan tüm portlarda (-p-) çok detaylı bir Nmap taraması başlatma
+#### Full detay Nmap
+```bash
 rustscan -a 10.10.10.5 -- -p- -A -v
+```
 
 ---
-## Bölüm 5: Performans Optimizasyonu
----
 
-# Aynı anda taranacak port sayısını (batch size) artırarak taramayı hızlandırma (Varsayılan: 4500)
+## ## PERFORMANS
+
+#### Batch size artır
+```bash
 rustscan -a 10.10.10.5 -b 6500
+```
 
-# Port taraması için zaman aşımı süresini (timeout) milisaniye cinsinden artırma (Yavaş ağlar için)
+#### Timeout artır
+```bash
 rustscan -a 10.10.10.5 -t 2000
+```
 
-# Açık dosya limiti (ulimit) değerini manuel olarak ayarlama (Genellikle RustScan bunu otomatik yapar)
+#### Ulimit ayarla
+```bash
 rustscan -a 10.10.10.5 -u 5000
+```
 
-# Portların taranma sırasını değiştirme (Serial veya Random)
+#### Tarama sırası
+```bash
 rustscan -a 10.10.10.5 --scan-order Serial
+```
 
 ---
-## Bölüm 6: Çıktı Yönetimi
----
 
-# Makine tarafından okunabilir (greppable) formatta sadece IP ve açık portları listeleme
+## ## OUTPUT
+
+#### Greppable çıktı
+```bash
 rustscan -a 10.10.10.5 -g
+```
 
-# Nmap çıktısını normal metin (.nmap) olarak kaydetme
-rustscan -a 10.10.10.5 -- -oN nmap_sonuclari.txt
+#### Nmap .txt
+```bash
+rustscan -a 10.10.10.5 -- -oN scan.txt
+```
 
-# Nmap çıktısını XML (.xml) formatında kaydetme
-rustscan -a 10.10.10.5 -- -oX nmap_sonuclari.xml
+#### Nmap XML
+```bash
+rustscan -a 10.10.10.5 -- -oX scan.xml
+```
 
-# Nmap çıktısını tüm formatlarda (nmap, gnmap, xml) kaydetme
-rustscan -a 10.10.10.5 -- -oA nmap_sonuclari_tum_formatlar
+#### Tüm formatlar
+```bash
+rustscan -a 10.10.10.5 -- -oA scan_all
+```
 
 ---
-## Bölüm 7: Diğer Faydalı Komutlar
----
 
-# Tarama için belirli bir ağ arayüzünü (network interface) kullanma
+## ## DİĞER
+
+#### Network interface seç
+```bash
 rustscan -a 10.10.10.5 -i eth1
+```
 
-# Taranan ana bilgisayar adları için DNS çözümlemesini devre dışı bırakma
+#### DNS kapat
+```bash
 rustscan -a example.com --no-dns
+```
 
-# Erişilemeyen hedefleri tekrar deneme sayısını belirleme
+#### Retry sayısı
+```bash
 rustscan -a 10.10.10.5 --tries 3
+```
 
-# RustScan versiyonunu kontrol etme
+#### Versiyon
+```bash
 rustscan --version
+```
+
+---
+
+## İpuçları
+
+- RustScan her zaman **ön tarama**, Nmap her zaman **derin analiz** içindir  
+- `--no-nmap` + `httpx` = ultra hızlı yüzey keşfi  
+- RustScan çıktısı direkt nuclei / ffuf zincirine girer  
+
+---
