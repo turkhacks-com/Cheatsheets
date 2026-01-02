@@ -1,21 +1,66 @@
-#### WFuzz, HTTP parametrelerini brute force yaparak zafiyetleri keşfetmeye yarayan güçlü bir araçtır.
-# Basit parametre brute force
+#     WFUZZ CHEATSHEET
+### Turkhacks.com | Bug Researchers Team
+#### GitHub: https://github.com/turkhacks-com
+#### WFuzz GitHub: https://github.com/xmendez/wfuzz
+
+---
+
+## Nedir:
+WFuzz, HTTP parametrelerini, dizinleri, dosyaları, header alanlarını ve veri payload’larını brute‑force ederek **gizli parametreler, LFI/RFI/XSS/IDOR ve yetkisiz erişim yüzeylerini** ortaya çıkaran çok yönlü bir fuzzing motorudur.
+
+---
+
+## ## TEMEL PARAMETRE FUZZING
+
+#### Basit parametre brute‑force
+```bash
 wfuzz -c -z file,/path/to/wordlist.txt --hc 404 http://target.com/FUZZ
+```
 
-# Hedef URL'ye POST isteği göndererek parametreleri brute force
-wfuzz -c -z file,/path/to/wordlist.txt --hc 404 -X POST -d "username=admin&password=FUZZ" http://target.com/login
+#### GET parametresi fuzzing
+```bash
+wfuzz -c -z file,/path/to/wordlist.txt http://target.com/page.php?id=FUZZ
+```
 
-# Hedef URL'ye belirli bir parametre ile brute force (örneğin, "FUZZ" ile değiştirilecek)
-wfuzz -c -z file,/path/to/wordlist.txt --hc 404 http://target.com/page.php?id=FUZZ
-
-# Belirli bir parametre üzerinden brute force
+#### Belirli parametre adı üzerinde fuzzing
+```bash
 wfuzz -c -z file,/path/to/wordlist.txt http://target.com/search?query=FUZZ
+```
 
-# URL'deki belirli bir parametreyi test etme
+---
+
+## ## POST / FORM FUZZING
+
+#### POST isteği ile parola alanı brute‑force
+```bash
+wfuzz -c -z file,/path/to/wordlist.txt --hc 404 -X POST -d "username=admin&password=FUZZ" http://target.com/login
+```
+
+#### HTML dosya uzantıları üzerinden fuzzing
+```bash
 wfuzz -c -z file,/path/to/wordlist.txt -u "http://target.com/page?file=FUZZ.html"
+```
 
-# HTTP header'larını brute force etme
+---
+
+## ## HEADER / ADVANCED
+
+#### Özel HTTP header fuzzing
+```bash
 wfuzz -c -z file,/path/to/wordlist.txt --header "X-Custom-Header: FUZZ" http://target.com
+```
 
-# Verbose (detaylı) çıktılarla parametreleri test etme
+#### Verbose mod (detaylı çıktı)
+```bash
 wfuzz -c -v -z file,/path/to/wordlist.txt http://target.com/FUZZ
+```
+
+---
+
+## İpuçları
+
+- wfuzz, `httpx` sonrası **gizli endpoint ve parametre keşfi** için en etkili araçlardan biridir  
+- IDOR, LFI ve yetki atlama testlerinde `FUZZ` değişkeni kritik rol oynar  
+- ffuf’a göre daha manuel ama daha esnektir  
+
+---
