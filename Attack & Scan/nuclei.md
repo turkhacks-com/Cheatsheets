@@ -1,78 +1,117 @@
-# Nuclei Cheat Sheet (Güncel ve Pratik)
+### Turkhacks.com | Bug researchers team
+#### GitHub: https://github.com/turkhacks-com
+#### Nuclei GitHub: https://github.com/projectdiscovery/nuclei
 
-# Tek hedef tarama
-echo https://target.com | nuclei -t cves/
+#### Nedir:
+Nuclei, web uygulamaları, ağ servisleri ve altyapılar üzerinde otomatik zafiyet taraması yapmak için kullanılan, YAML tabanlı template sistemiyle çalışan hızlı ve özelleştirilebilir bir güvenlik tarama aracıdır.
 
-# Hedef listesini dosyadan oku
-nuclei -l targets.txt -t cves/
+---
 
-# Belirli bir template ile tarama (tek dosya)
-echo https://target.com | nuclei -t vulnerabilities/wordpress/wp-file-manager.yaml
+## NUCLEI CHEAT SHEET (Güncel ve Pratik)
 
-# Template klasörü ile tarama
-echo https://target.com | nuclei -t vulnerabilities/
+---
 
-# Tüm yerel template'leri kullan
-echo https://target.com | nuclei -t ~/nuclei-templates/
+## TEMEL KULLANIM
 
-# Template kategorilerine göre tarama (cves, misconfig, exposures vs.)
-echo https://target.com | nuclei -t cves/
-echo https://target.com | nuclei -t misconfiguration/
-echo https://target.com | nuclei -t exposures/
+#### Tek hedef tarama
+`echo https://target.com | nuclei -t cves/`
 
-# Belirli bir severity (önem düzeyi) ile filtrele
-echo https://target.com | nuclei -t cves/ -severity critical,high
+#### Hedef listesini dosyadan oku
+`nuclei -l targets.txt -t cves/`
 
-# Etiket (tags) ile template filtreleme
-echo https://target.com | nuclei -tags cve,wordpress
+#### Belirli bir template ile tarama
+`echo https://target.com | nuclei -t vulnerabilities/wordpress/wp-file-manager.yaml`
 
-# Belirli bir CVE ID'si ile tarama
-echo https://target.com | nuclei -id CVE-2021-26855
+#### Template klasörü ile tarama
+`echo https://target.com | nuclei -t vulnerabilities/`
 
-# Çıktıyı dosyaya yaz
-nuclei -l targets.txt -t cves/ -o output.txt
+#### Tüm yerel template’leri kullan
+`echo https://target.com | nuclei -t ~/nuclei-templates/`
 
-# JSON formatında çıktı
-nuclei -l targets.txt -t cves/ -json -o output.json
+---
 
-# Sessiz mod (sadece sonuçları gösterir)
-nuclei -l targets.txt -t cves/ -silent
+## TEMPLATE FİLTRELEME
 
-# Renkli çıktıyı kapat
-nuclei -l targets.txt -t cves/ -nc
+#### Kategoriye göre tarama
+`echo https://target.com | nuclei -t cves/`  
+`echo https://target.com | nuclei -t misconfiguration/`  
+`echo https://target.com | nuclei -t exposures/`
 
-# Hataları gösterme (sessiz hata modu)
-nuclei -l targets.txt -t cves/ -silent -es info,error
+#### Severity (önem düzeyi) filtreleme
+`echo https://target.com | nuclei -t cves/ -severity critical,high`
 
-# Proxy ile tarama yap
-echo https://target.com | nuclei -t cves/ -proxy http://127.0.0.1:8080
+#### Tag ile filtreleme
+`echo https://target.com | nuclei -tags cve,wordpress`
 
-# Rate limit (saniyede istek sayısını sınırlama)
-nuclei -l targets.txt -t cves/ -rate-limit 50
+#### Belirli CVE ID
+`echo https://target.com | nuclei -id CVE-2021-26855`
 
-# Thread sayısını belirle
-nuclei -l targets.txt -t cves/ -c 100
+---
 
-# Burp Suite proxy kullanımı için
-nuclei -l targets.txt -t cves/ -proxy http://127.0.0.1:8080 -H "User-Agent: custom-agent"
+## ÇIKTI VE FORMAT
 
-# Interactsh destekli template’leri kullanmak için (OOB zafiyetleri)
-echo https://target.com | nuclei -t dns/ -interactsh-url https://interact.sh
+#### Çıktıyı dosyaya yaz
+`nuclei -l targets.txt -t cves/ -o output.txt`
 
-# Template güncelle
-nuclei -update-templates
+#### JSON formatında çıktı
+`nuclei -l targets.txt -t cves/ -json -o output.json`
 
-# Template dizini göster
-nuclei -update -ut
+#### Sessiz mod
+`nuclei -l targets.txt -t cves/ -silent`
 
-# Özetle tüm hedefleri hızlıca tara ve sonuçları listele
-nuclei -l targets.txt -t cves/ -severity critical,high -silent -o criticals.txt
+#### Renkli çıktıyı kapat
+`nuclei -l targets.txt -t cves/ -nc`
 
+#### Hata bastırma
+`nuclei -l targets.txt -t cves/ -silent -es info,error`
 
-# SCANNING 
-echo http://testphp.vulnweb.com/ | nuclei -t ~/nuclei-templates/ -o vulnweb_genel.txt
-echo http://testphp.vulnweb.com/ | nuclei -t cves/ -o vulnweb_cves.txt
-echo http://testphp.vulnweb.com/ | nuclei -t technologies/ -o vulnweb_techs.txt
-echo http://testphp.vulnweb.com/ | nuclei -tags sqli,xss,lfi,rce -severity critical,high -o vulnweb_critical.txt
-echo http://testphp.vulnweb.com/ | nuclei -tags xss -o vulnweb_xss.txt
-echo http://testphp.vulnweb.com/ | nuclei -t ~/nuclei-templates/ -silent -nc -o final.txt
+---
+
+## PROXY, HIZ VE THREAD
+
+#### Proxy ile tarama
+`echo https://target.com | nuclei -t cves/ -proxy http://127.0.0.1:8080`
+
+#### Rate limit
+`nuclei -l targets.txt -t cves/ -rate-limit 50`
+
+#### Thread sayısı
+`nuclei -l targets.txt -t cves/ -c 100`
+
+#### Burp Suite proxy + custom UA
+`nuclei -l targets.txt -t cves/ -proxy http://127.0.0.1:8080 -H "User-Agent: custom-agent"`
+
+---
+
+## OOB / INTERACTSH
+
+#### OOB zafiyetleri için Interactsh
+`echo https://target.com | nuclei -t dns/ -interactsh-url https://interact.sh`
+
+---
+
+## TEMPLATE YÖNETİMİ
+
+#### Template güncelle
+`nuclei -update-templates`
+
+#### Template dizinini göster
+`nuclei -update -ut`
+
+---
+
+## HIZLI KRİTİK TARAMA
+
+#### Kritik & yüksek seviyeli zafiyetleri tara
+`nuclei -l targets.txt -t cves/ -severity critical,high -silent -o criticals.txt`
+
+---
+
+## ÖRNEK SCANNING
+
+`echo http://testphp.vulnweb.com/ | nuclei -t ~/nuclei-templates/ -o vulnweb_genel.txt`  
+`echo http://testphp.vulnweb.com/ | nuclei -t cves/ -o vulnweb_cves.txt`  
+`echo http://testphp.vulnweb.com/ | nuclei -t technologies/ -o vulnweb_techs.txt`  
+`echo http://testphp.vulnweb.com/ | nuclei -tags sqli,xss,lfi,rce -severity critical,high -o vulnweb_critical.txt`  
+`echo http://testphp.vulnweb.com/ | nuclei -tags xss -o vulnweb_xss.txt`  
+`echo http://testphp.vulnweb.com/ | nuclei -t ~/nuclei-templates/ -silent -nc -o final.txt`
